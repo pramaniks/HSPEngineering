@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Configuration\Core.Configuration.csproj" />
+    <ProjectReference Include="..\Core.Logging\Core.Logging.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="C:\Windows\System32\xcopy.exe &quot;$(TargetPath)&quot; &quot;$(ProjectDir)..\..\..\output\&quot; /y&#xD;&#xA;C:\Windows\System32\xcopy.exe &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;$(ProjectDir)..\..\..\output\&quot; /y" />
+    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="cp '$(TargetPath)' '$(ProjectDir)../../../output/'&#xA;cp '$(TargetDir)$(TargetName).pdb' '$(ProjectDir)../../../output/'" />
+  </Target>
+
+  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' != 'Windows_NT'">
+    <Exec Command="cp '$(TargetPath)' '$(ProjectDir)../../../output/'&#xA;cp '$(TargetDir)$(TargetName).pdb' '$(ProjectDir)../../../output/'" />
+  </Target>-->
+
+</Project>

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.15.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />   
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Configuration\Core.Configuration.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="C:\Windows\System32\xcopy.exe &quot;$(TargetPath)&quot; &quot;$(ProjectDir)..\..\..\output\&quot; /y&#xD;&#xA;C:\Windows\System32\xcopy.exe &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;$(ProjectDir)..\..\..\output\&quot; /y" />
+    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="cp '$(TargetPath)' '$(ProjectDir)../../../output/'&#xA;cp '$(TargetDir)$(TargetName).pdb' '$(ProjectDir)../../../output/'" />
+  </Target>
+
+  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' != 'Windows_NT'">
+    <Exec Command="cp '$(TargetPath)' '$(ProjectDir)../../../output/'&#xA;cp '$(TargetDir)$(TargetName).pdb' '$(ProjectDir)../../../output/'" />
+  </Target>-->
+
+</Project>
